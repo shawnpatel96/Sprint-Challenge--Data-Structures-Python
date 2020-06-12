@@ -2,22 +2,17 @@
 class RingBuffer:
     def __init__(self, capacity):
         self.capacity = capacity
-        self.size = 0
-        self.storage = []
-        self.order = []
+        self.current_node = 0
+        self.storage = [None] * capacity
 
     def append(self, item):
-
-        if self.size < self.capacity:
-            self.order.append(item)
-            self.storage.append(item)
-            self.size +=1
-        else:
-            index = self.order.index(self.storage[0])
-            self.storage.pop(0)
-            self.order[index] = item
-            self.storage.append(item)
-                
+        self.storage[self.current_node] = item
+        self.current_node += 1
+        # if capacity full 
+        if self.current_node >= self.capacity:
+            # reset node to 0
+            self.current_node = 0
 
     def get(self):
-        return self.order
+        # Return all items not equal to none
+        return [item for item in self.storage if item != None]
